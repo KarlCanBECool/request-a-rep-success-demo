@@ -65,7 +65,7 @@ export function AnimatedLoader({
             ease: T.AVATAR_REVEAL_EASING,
           }}
         >
-          <img src="/assets/agent-man.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}assets/agent-man.png`} alt="" />
         </motion.div>
         <motion.div
           className="animated-loader__avatar animated-loader__avatar--woman"
@@ -76,7 +76,7 @@ export function AnimatedLoader({
             ease: T.AVATAR_REVEAL_EASING,
           }}
         >
-          <img src="/assets/agent-woman.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}assets/agent-woman.png`} alt="" />
         </motion.div>
       </div>
     </motion.div>
