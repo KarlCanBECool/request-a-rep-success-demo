@@ -104,19 +104,17 @@
   border: 2px solid var(--ui-alert-positive);
 }
 
-.success-content__step-icon--pending {
-  border: 1px solid var(--colour-stock-grey-400);
-}
-
-/* Half-fill matching Figma active step indicator (top semicircle) */
 .success-content__step-icon--active::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 50%;
+  inset: -2px;
   background: var(--ui-alert-positive);
+  /* Top semicircle matching Figma progressFill (then reads as half-complete) */
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+
+.success-content__step-icon--pending {
+  border: 1px solid var(--colour-stock-grey-400);
 }
 
 .success-content__step-text {

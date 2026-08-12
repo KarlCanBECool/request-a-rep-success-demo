@@ -148,16 +148,16 @@ export function useSuccessAnimation() {
         duration: T.PROGRESS_DURATION / 1000,
         ease: T.PROGRESS_EASING,
         onUpdate: (v) => {
-          setState((s) => ({ ...s, progress: v }))
-
-          if (!womanTriggered.current && v >= T.WOMAN_REVEAL_PROGRESS) {
-            womanTriggered.current = true
-            setState((s) => ({ ...s, showWoman: true }))
-          }
-          if (!manTriggered.current && v >= T.MAN_REVEAL_PROGRESS) {
-            manTriggered.current = true
-            setState((s) => ({ ...s, showMan: true }))
-          }
+          const showWoman = v >= T.WOMAN_REVEAL_PROGRESS
+          const showMan = v >= T.MAN_REVEAL_PROGRESS
+          if (showWoman) womanTriggered.current = true
+          if (showMan) manTriggered.current = true
+          setState((s) => ({
+            ...s,
+            progress: v,
+            showWoman: s.showWoman || showWoman,
+            showMan: s.showMan || showMan,
+          }))
         },
         onComplete: () => {
           setState((s) => ({

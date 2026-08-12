@@ -39,6 +39,6 @@
   --loader-size: 90px;
   --loader-inner: 66px;
   --loader-inset: 12px;
-  --loader-stroke: 4px;
-  --loader-track: #e5e5e5;
+  --loader-stroke: 5px;
+  --loader-track: #dbe7f5;
 }

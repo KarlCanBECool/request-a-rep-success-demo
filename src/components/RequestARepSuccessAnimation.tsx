@@ -16,10 +16,14 @@ export function RequestARepSuccessAnimation() {
   useLayoutEffect(() => {
     const measure = () => {
       if (!loaderRef.current) return
-      const rect = loaderRef.current.getBoundingClientRect()
+      // Temporarily clear transform to measure the final (settled) position
+      const node = loaderRef.current
+      const prev = node.style.transform
+      node.style.transform = 'none'
+      const rect = node.getBoundingClientRect()
+      node.style.transform = prev
       const loaderCenter = rect.top + rect.height / 2
       const viewportCenter = window.innerHeight / 2
-      // Offset needed to move loader from its final (top) position to viewport center
       setCenterOffset(viewportCenter - loaderCenter)
       setMeasured(true)
     }
@@ -27,7 +31,7 @@ export function RequestARepSuccessAnimation() {
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
-  }, [state.isComplete])
+  }, [])
 
   const loaderY = state.circleSettled ? 0 : measured ? centerOffset : 0
 

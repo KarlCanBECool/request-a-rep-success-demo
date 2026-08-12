@@ -6,11 +6,13 @@ Standalone demo of the Request A Rep success-state animation, matching the Figma
 
 ## Share link
 
-After deploy, the public URL will be listed here:
-
-**https://request-a-rep-success-demo.vercel.app** _(update after first deploy)_
+**https://karlcanbecool.github.io/request-a-rep-success-demo/**
 
 Anyone can open this link from any network. Use **Replay animation** (bottom-right) to re-watch.
+
+Source: https://github.com/KarlCanBECool/request-a-rep-success-demo
+
+> Vercel deploy needs `vercel login` on this machine (no active session). GitHub Pages is used instead for the public share URL. After logging into Vercel you can still run `npx vercel --prod`.
 
 ## Local preview
 
