@@ -15,6 +15,7 @@ export type AnimationPhase =
   | 'moving'
   | 'revealing'
   | 'complete'
+  | 'stepCascade'
 
 export interface SuccessAnimationState {
   phase: AnimationPhase
@@ -26,6 +27,12 @@ export interface SuccessAnimationState {
   circleSettled: boolean
   revealed: Record<ContentRevealKey, boolean>
   isComplete: boolean
+  /** Step cascade: step 1 pie 0.5 → 1 */
+  step1Progress: number
+  /** Connector between step 1 and 2: 0 → 1 (linear green fill) */
+  connector1Fill: number
+  /** After connector fills, step 2 becomes active semicircle */
+  step2Active: boolean
 }
 
 const initialRevealed = (): Record<ContentRevealKey, boolean> =>
@@ -44,7 +51,16 @@ const initialState = (): SuccessAnimationState => ({
   circleSettled: false,
   revealed: initialRevealed(),
   isComplete: false,
+  step1Progress: 0.5,
+  connector1Fill: 0,
+  step2Active: false,
 })
+
+const finalCascadeState = {
+  step1Progress: 1,
+  connector1Fill: 1,
+  step2Active: true,
+} as const
 
 type Stoppable = { stop: () => void }
 
@@ -56,7 +72,6 @@ export function useSuccessAnimation() {
   const womanTriggered = useRef(false)
   const manTriggered = useRef(false)
   const controlsRef = useRef<Stoppable[]>([])
-  const hasStartedRef = useRef(false)
 
   const stopAll = useCallback(() => {
     controlsRef.current.forEach((c) => c.stop())
@@ -65,6 +80,35 @@ export function useSuccessAnimation() {
 
   const trackTimeout = useCallback((id: number) => {
     controlsRef.current.push({ stop: () => window.clearTimeout(id) })
+  }, [])
+
+  const startStepCascade = useCallback(() => {
+    setState((s) => ({ ...s, phase: 'stepCascade' }))
+
+    const pieAnim = animate(0.5, 1, {
+      duration: T.STEP_PIE_FILL_DURATION / 1000,
+      ease: T.STEP_PIE_FILL_EASING,
+      onUpdate: (v) => setState((s) => ({ ...s, step1Progress: v })),
+      onComplete: () => {
+        setState((s) => ({ ...s, step1Progress: 1 }))
+
+        const lineAnim = animate(0, 1, {
+          duration: T.CONNECTOR_FILL_DURATION / 1000,
+          ease: T.CONNECTOR_FILL_EASING,
+          onUpdate: (v) => setState((s) => ({ ...s, connector1Fill: v })),
+          onComplete: () => {
+            setState((s) => ({
+              ...s,
+              connector1Fill: 1,
+              step2Active: true,
+              phase: 'complete',
+            }))
+          },
+        })
+        controlsRef.current.push(lineAnim)
+      },
+    })
+    controlsRef.current.push(pieAnim)
   }, [])
 
   const revealContent = useCallback(
@@ -78,6 +122,7 @@ export function useSuccessAnimation() {
             CONTENT_REVEAL_KEYS.map((k) => [k, true]),
           ) as Record<ContentRevealKey, boolean>,
           isComplete: true,
+          ...finalCascadeState,
         }))
         return
       }
@@ -86,18 +131,26 @@ export function useSuccessAnimation() {
 
       CONTENT_REVEAL_KEYS.forEach((key, index) => {
         const timeout = window.setTimeout(() => {
+          const isLast = index === CONTENT_REVEAL_KEYS.length - 1
           setState((s) => ({
             ...s,
             revealed: { ...s.revealed, [key]: true },
-            ...(index === CONTENT_REVEAL_KEYS.length - 1
-              ? { phase: 'complete' as const, isComplete: true }
-              : {}),
+            ...(isLast ? { isComplete: true } : {}),
           }))
+
+          if (isLast) {
+            const cascadeDelay =
+              T.CONTENT_REVEAL_DURATION + T.STEP_CASCADE_HOLD
+            const cascadeTimeout = window.setTimeout(() => {
+              startStepCascade()
+            }, cascadeDelay)
+            trackTimeout(cascadeTimeout)
+          }
         }, index * T.CONTENT_STAGGER)
         trackTimeout(timeout)
       })
     },
-    [trackTimeout],
+    [startStepCascade, trackTimeout],
   )
 
   useEffect(() => {
@@ -105,7 +158,6 @@ export function useSuccessAnimation() {
     womanTriggered.current = false
     manTriggered.current = false
     progressMv.set(0)
-    hasStartedRef.current = true
 
     if (prefersReducedMotion) {
       setState({
@@ -120,6 +172,7 @@ export function useSuccessAnimation() {
           CONTENT_REVEAL_KEYS.map((k) => [k, true]),
         ) as Record<ContentRevealKey, boolean>,
         isComplete: true,
+        ...finalCascadeState,
       })
       return () => stopAll()
     }

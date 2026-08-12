@@ -35,36 +35,94 @@ function RevealDiv({
   )
 }
 
+interface StepConnectorProps {
+  /** 0–1 green fill from top to bottom */
+  fill: number
+}
+
+function StepConnector({ fill }: StepConnectorProps) {
+  return (
+    <div className="success-content__step-connector" aria-hidden="true">
+      <div className="success-content__step-connector-track" />
+      <div
+        className="success-content__step-connector-fill"
+        style={{ transform: `translateX(-50%) scaleY(${fill})` }}
+      />
+    </div>
+  )
+}
+
 const STEPS = [
   {
     key: 'step1' as const,
     title: 'Rep assignment',
     description:
       'They will review your request and confirm they are your point of contact',
-    status: 'active' as const,
   },
   {
     key: 'step2' as const,
     title: 'Rep outreach',
     description:
       'You will receive a call or email from your rep to help with your enquiry',
-    status: 'pending' as const,
   },
   {
     key: 'step3' as const,
     title: 'Continued support',
     description:
       "We'll schedule a visit to your office or continue to offer tailored support for your needs",
-    status: 'pending' as const,
   },
 ]
 
+export interface StepCascadeState {
+  step1Progress: number
+  connector1Fill: number
+  step2Active: boolean
+}
+
 interface SuccessContentProps {
   revealed: Record<ContentRevealKey, boolean>
+  cascade: StepCascadeState
   onCtaClick?: () => void
 }
 
-export function SuccessContent({ revealed, onCtaClick }: SuccessContentProps) {
+function StepIcon({
+  stepKey,
+  cascade,
+}: {
+  stepKey: 'step1' | 'step2' | 'step3'
+  cascade: StepCascadeState
+}) {
+  if (stepKey === 'step1') {
+    return (
+      <StepProgressCircle
+        progress={cascade.step1Progress}
+        className="success-content__step-icon success-content__step-icon--active"
+      />
+    )
+  }
+
+  if (stepKey === 'step2' && cascade.step2Active) {
+    return (
+      <StepProgressCircle
+        progress={0.5}
+        className="success-content__step-icon success-content__step-icon--active"
+      />
+    )
+  }
+
+  return (
+    <div
+      className="success-content__step-icon success-content__step-icon--pending"
+      aria-hidden="true"
+    />
+  )
+}
+
+export function SuccessContent({
+  revealed,
+  cascade,
+  onCtaClick,
+}: SuccessContentProps) {
   return (
     <div className="success-content">
       <div className="success-content__heading-block">
@@ -86,29 +144,24 @@ export function SuccessContent({ revealed, onCtaClick }: SuccessContentProps) {
         <div className="success-content__steps-title">What your rep will do</div>
 
         <div className="success-content__steps">
-          <div className="success-content__progress-line" aria-hidden="true" />
-          {STEPS.map((step) => (
-            <RevealDiv
-              key={step.key}
-              className="success-content__step"
-              revealed={revealed[step.key]}
-            >
-              {step.status === 'active' ? (
-                <StepProgressCircle
-                  progress={0.5}
-                  className="success-content__step-icon success-content__step-icon--active"
-                />
-              ) : (
-                <div
-                  className="success-content__step-icon success-content__step-icon--pending"
-                  aria-hidden="true"
-                />
+          {STEPS.map((step, index) => (
+            <div key={step.key} className="success-content__step-block">
+              <RevealDiv
+                className="success-content__step"
+                revealed={revealed[step.key]}
+              >
+                <StepIcon stepKey={step.key} cascade={cascade} />
+                <div className="success-content__step-text">
+                  <p className="success-content__step-title">{step.title}</p>
+                  <p className="success-content__step-desc">{step.description}</p>
+                </div>
+              </RevealDiv>
+
+              {index === 0 && (
+                <StepConnector fill={cascade.connector1Fill} />
               )}
-              <div className="success-content__step-text">
-                <p className="success-content__step-title">{step.title}</p>
-                <p className="success-content__step-desc">{step.description}</p>
-              </div>
-            </RevealDiv>
+              {index === 1 && <StepConnector fill={0} />}
+            </div>
           ))}
         </div>
       </RevealDiv>

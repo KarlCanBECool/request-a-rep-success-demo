@@ -29,6 +29,13 @@ export const ANIMATION_TIMELINE = {
   CONTENT_REVEAL_DURATION: 350,
   CONTENT_REVEAL_EASING: [0.4, 0, 0.2, 1] as const,
   CONTENT_TRANSLATE_Y: 10,
+
+  /** Phase 8: step cascade after content is in */
+  STEP_CASCADE_HOLD: 100,
+  STEP_PIE_FILL_DURATION: 400,
+  STEP_PIE_FILL_EASING: [0.4, 0, 0.2, 1] as const,
+  CONNECTOR_FILL_DURATION: 450,
+  CONNECTOR_FILL_EASING: 'linear' as const,
 } as const
 
 /** Absolute timeline anchors (ms from animation start). */

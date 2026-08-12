@@ -66,19 +66,43 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-m);
+  gap: 0;
   padding: 0 var(--space-s);
 }
 
-.success-content__progress-line {
-  position: absolute;
-  left: calc(var(--space-s) + 14px);
-  top: 15px;
-  bottom: 61.5px;
-  width: 1px;
-  background: var(--colour-stock-grey-400);
-  transform: translateX(-50%);
+.success-content__step-block {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.success-content__step-connector {
+  position: relative;
+  width: 28px;
+  height: var(--space-m);
+  flex-shrink: 0;
   pointer-events: none;
+}
+
+.success-content__step-connector-track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--colour-stock-grey-400);
+}
+
+.success-content__step-connector-fill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ui-alert-positive);
+  transform-origin: top center;
+  will-change: transform;
 }
 
 .success-content__step {
