@@ -32,15 +32,15 @@ export const ANIMATION_TIMELINE = {
 
   /** Phase 8: step cascade after content is in */
   STEP_CASCADE_HOLD: 100,
-  STEP_PIE_FILL_DURATION: 400,
+  STEP_PIE_FILL_DURATION: 1000,
   STEP_PIE_FILL_EASING: [0.4, 0, 0.2, 1] as const,
   CONNECTOR_FILL_DURATION: 2500,
   CONNECTOR_FILL_EASING: 'linear' as const,
 
   /** Phase 9: step 2 arrival after connector reaches it */
-  STEP2_RING_FILL_DURATION: 500,
+  STEP2_RING_FILL_DURATION: 1000,
   STEP2_RING_FILL_EASING: 'linear' as const,
-  STEP2_PIE_REVEAL_DURATION: 400,
+  STEP2_PIE_REVEAL_DURATION: 1000,
   STEP2_PIE_REVEAL_EASING: [0.4, 0, 0.2, 1] as const,
 } as const
 
