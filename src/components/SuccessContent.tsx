@@ -36,7 +36,6 @@ function RevealDiv({
 }
 
 interface StepConnectorProps {
-  /** 0–1 green fill from top to bottom */
   fill: number
 }
 
@@ -76,7 +75,8 @@ const STEPS = [
 export interface StepCascadeState {
   step1Progress: number
   connector1Fill: number
-  step2Active: boolean
+  step2RingFill: number
+  step2PieReveal: number
 }
 
 interface SuccessContentProps {
@@ -101,12 +101,22 @@ function StepIcon({
     )
   }
 
-  if (stepKey === 'step2' && cascade.step2Active) {
+  if (stepKey === 'step2') {
     return (
-      <StepProgressCircle
-        progress={0.5}
-        className="success-content__step-icon success-content__step-icon--active"
-      />
+      <div className="success-content__step-icon-stack">
+        <div
+          className="success-content__step-icon success-content__step-icon--pending"
+          aria-hidden="true"
+        />
+        {cascade.step2RingFill > 0 && (
+          <StepProgressCircle
+            progress={0.5}
+            ringReveal={cascade.step2RingFill}
+            pieReveal={cascade.step2PieReveal}
+            className="success-content__step-icon success-content__step-icon--active success-content__step-icon--overlay"
+          />
+        )}
+      </div>
     )
   }
 
@@ -146,8 +156,7 @@ export function SuccessContent({
         <div className="success-content__steps">
           {STEPS.map((step, index) => {
             const isLast = index === STEPS.length - 1
-            const connectorFill =
-              index === 0 ? cascade.connector1Fill : 0
+            const connectorFill = index === 0 ? cascade.connector1Fill : 0
 
             return (
               <RevealDiv

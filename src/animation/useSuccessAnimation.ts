@@ -31,8 +31,10 @@ export interface SuccessAnimationState {
   step1Progress: number
   /** Connector between step 1 and 2: 0 → 1 (linear green fill) */
   connector1Fill: number
-  /** After connector fills, step 2 becomes active semicircle */
-  step2Active: boolean
+  /** Step 2 green ring wipe top→bottom over grey pending */
+  step2RingFill: number
+  /** Step 2 pie reveal bottom→top (0 → 1 masks the 0.5 semicircle) */
+  step2PieReveal: number
 }
 
 const initialRevealed = (): Record<ContentRevealKey, boolean> =>
@@ -53,13 +55,15 @@ const initialState = (): SuccessAnimationState => ({
   isComplete: false,
   step1Progress: 0.5,
   connector1Fill: 0,
-  step2Active: false,
+  step2RingFill: 0,
+  step2PieReveal: 0,
 })
 
 const finalCascadeState = {
   step1Progress: 1,
   connector1Fill: 1,
-  step2Active: true,
+  step2RingFill: 1,
+  step2PieReveal: 1,
 } as const
 
 type Stoppable = { stop: () => void }
@@ -82,6 +86,32 @@ export function useSuccessAnimation() {
     controlsRef.current.push({ stop: () => window.clearTimeout(id) })
   }, [])
 
+  const startStep2Arrival = useCallback(() => {
+    const ringAnim = animate(0, 1, {
+      duration: T.STEP2_RING_FILL_DURATION / 1000,
+      ease: T.STEP2_RING_FILL_EASING,
+      onUpdate: (v) => setState((s) => ({ ...s, step2RingFill: v })),
+      onComplete: () => {
+        setState((s) => ({ ...s, step2RingFill: 1 }))
+
+        const pieRevealAnim = animate(0, 1, {
+          duration: T.STEP2_PIE_REVEAL_DURATION / 1000,
+          ease: T.STEP2_PIE_REVEAL_EASING,
+          onUpdate: (v) => setState((s) => ({ ...s, step2PieReveal: v })),
+          onComplete: () => {
+            setState((s) => ({
+              ...s,
+              step2PieReveal: 1,
+              phase: 'complete',
+            }))
+          },
+        })
+        controlsRef.current.push(pieRevealAnim)
+      },
+    })
+    controlsRef.current.push(ringAnim)
+  }, [])
+
   const startStepCascade = useCallback(() => {
     setState((s) => ({ ...s, phase: 'stepCascade' }))
 
@@ -97,19 +127,15 @@ export function useSuccessAnimation() {
           ease: T.CONNECTOR_FILL_EASING,
           onUpdate: (v) => setState((s) => ({ ...s, connector1Fill: v })),
           onComplete: () => {
-            setState((s) => ({
-              ...s,
-              connector1Fill: 1,
-              step2Active: true,
-              phase: 'complete',
-            }))
+            setState((s) => ({ ...s, connector1Fill: 1 }))
+            startStep2Arrival()
           },
         })
         controlsRef.current.push(lineAnim)
       },
     })
     controlsRef.current.push(pieAnim)
-  }, [])
+  }, [startStep2Arrival])
 
   const revealContent = useCallback(
     (skipStagger: boolean) => {

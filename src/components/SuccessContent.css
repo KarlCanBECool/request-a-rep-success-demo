@@ -130,6 +130,20 @@
   z-index: 1;
 }
 
+.success-content__step-icon-stack {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.success-content__step-icon--overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .success-content__step-icon--active {
   /* Ring + fill drawn in SVG; no CSS border needed */
   overflow: visible;

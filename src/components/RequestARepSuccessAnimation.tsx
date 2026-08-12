@@ -68,7 +68,8 @@ export function RequestARepSuccessAnimation() {
             cascade={{
               step1Progress: state.step1Progress,
               connector1Fill: state.connector1Fill,
-              step2Active: state.step2Active,
+              step2RingFill: state.step2RingFill,
+              step2PieReveal: state.step2PieReveal,
             }}
             onCtaClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' })
