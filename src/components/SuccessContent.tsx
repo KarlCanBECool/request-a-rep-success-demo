@@ -56,7 +56,7 @@ const STEPS = [
     key: 'step1' as const,
     title: 'Rep assignment',
     description:
-      'They will review your request and confirm they are your point of contact',
+      'We will process your request and link you to a representative in your area',
   },
   {
     key: 'step2' as const,
@@ -149,9 +149,9 @@ export function SuccessContent({
       <RevealDiv
         className="success-content__steps-card"
         revealed={revealed.stepsTitle}
-        aria-label="What your rep will do"
+        aria-label="What happens next?"
       >
-        <div className="success-content__steps-title">What your rep will do</div>
+        <div className="success-content__steps-title">What happens next?</div>
 
         <div className="success-content__steps">
           {STEPS.map((step, index) => {
