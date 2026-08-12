@@ -46,7 +46,7 @@ function StepConnector({ fill }: StepConnectorProps) {
       <div className="success-content__step-connector-track" />
       <div
         className="success-content__step-connector-fill"
-        style={{ transform: `translateX(-50%) scaleY(${fill})` }}
+        style={{ transform: `scaleY(${fill})` }}
       />
     </div>
   )
@@ -144,25 +144,28 @@ export function SuccessContent({
         <div className="success-content__steps-title">What your rep will do</div>
 
         <div className="success-content__steps">
-          {STEPS.map((step, index) => (
-            <div key={step.key} className="success-content__step-block">
+          {STEPS.map((step, index) => {
+            const isLast = index === STEPS.length - 1
+            const connectorFill =
+              index === 0 ? cascade.connector1Fill : 0
+
+            return (
               <RevealDiv
+                key={step.key}
                 className="success-content__step"
                 revealed={revealed[step.key]}
               >
-                <StepIcon stepKey={step.key} cascade={cascade} />
+                <div className="success-content__step-rail">
+                  <StepIcon stepKey={step.key} cascade={cascade} />
+                  {!isLast && <StepConnector fill={connectorFill} />}
+                </div>
                 <div className="success-content__step-text">
                   <p className="success-content__step-title">{step.title}</p>
                   <p className="success-content__step-desc">{step.description}</p>
                 </div>
               </RevealDiv>
-
-              {index === 0 && (
-                <StepConnector fill={cascade.connector1Fill} />
-              )}
-              {index === 1 && <StepConnector fill={0} />}
-            </div>
-          ))}
+            )
+          })}
         </div>
       </RevealDiv>
 

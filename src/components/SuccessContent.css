@@ -66,52 +66,56 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--space-m);
   padding: 0 var(--space-s);
 }
 
-.success-content__step-block {
+.success-content__step {
+  display: flex;
+  gap: var(--space-s);
+  align-items: stretch;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon + connector column: connector grows to span down to the next icon */
+.success-content__step-rail {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
+  width: 28px;
+  flex-shrink: 0;
+  align-self: stretch;
 }
 
 .success-content__step-connector {
   position: relative;
   width: 28px;
-  height: var(--space-m);
-  flex-shrink: 0;
+  flex: 1 1 auto;
+  min-height: var(--space-m);
+  margin-bottom: calc(var(--space-m) * -1);
   pointer-events: none;
 }
 
 .success-content__step-connector-track {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 0.5px);
   top: 0;
   bottom: 0;
   width: 1px;
-  transform: translateX(-50%);
   background: var(--colour-stock-grey-400);
 }
 
 .success-content__step-connector-fill {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 0.5px);
   top: 0;
   bottom: 0;
   width: 1px;
   background: var(--ui-alert-positive);
   transform-origin: top center;
   will-change: transform;
-}
-
-.success-content__step {
-  display: flex;
-  gap: var(--space-s);
-  align-items: flex-start;
-  width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
 .success-content__step-icon {
@@ -123,6 +127,7 @@
   position: relative;
   overflow: hidden;
   display: block;
+  z-index: 1;
 }
 
 .success-content__step-icon--active {
