@@ -21,9 +21,9 @@ export function describePiePath(
     ].join(' ')
   }
 
-  // Start at 12 o'clock; sweep clockwise
+  // Start at 12 o'clock; sweep counter-clockwise so 50% fills the left half
   const startAngle = -Math.PI / 2
-  const endAngle = startAngle + clamped * Math.PI * 2
+  const endAngle = startAngle - clamped * Math.PI * 2
   const x1 = cx + radius * Math.cos(startAngle)
   const y1 = cy + radius * Math.sin(startAngle)
   const x2 = cx + radius * Math.cos(endAngle)
@@ -33,7 +33,7 @@ export function describePiePath(
   return [
     `M ${cx} ${cy}`,
     `L ${x1} ${y1}`,
-    `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
+    `A ${radius} ${radius} 0 ${largeArc} 0 ${x2} ${y2}`,
     'Z',
   ].join(' ')
 }
