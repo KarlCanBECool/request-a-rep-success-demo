@@ -1,0 +1,71 @@
+.animated-loader {
+  position: relative;
+  width: var(--loader-size);
+  height: var(--loader-size);
+  flex-shrink: 0;
+}
+
+.animated-loader__ring {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.animated-loader__track {
+  stroke: var(--loader-track);
+  stroke-width: var(--loader-stroke);
+}
+
+.animated-loader__progress {
+  stroke: var(--colour-brand-primary);
+  stroke-width: var(--loader-stroke);
+  stroke-linecap: butt;
+  transition: none;
+}
+
+.animated-loader__avatars {
+  position: absolute;
+  left: var(--loader-inset);
+  top: var(--loader-inset);
+  width: var(--loader-inner);
+  height: var(--loader-inner);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.animated-loader__avatars-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  background: var(--colour-brand-primary-600);
+}
+
+.animated-loader__avatar {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+}
+
+.animated-loader__avatar img {
+  position: absolute;
+  max-width: none;
+}
+
+/* Woman — right side (appears at 25%) — Figma crop offsets */
+.animated-loader__avatar--woman img {
+  height: 79.74%;
+  width: 93.5%;
+  left: 24.42%;
+  top: 20.65%;
+}
+
+/* Man — left side (appears at 50%) — Figma crop offsets */
+.animated-loader__avatar--man img {
+  height: 76.02%;
+  width: 99.37%;
+  left: -24.24%;
+  top: 21.88%;
+}

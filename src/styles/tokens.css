@@ -1,0 +1,44 @@
+:root {
+  /* Colour */
+  --colour-brand-white: #fdfdff;
+  --colour-brand-primary-600: #e5f0ff;
+  --colour-brand-primary: #006cff;
+  --colour-stock-grey-400: #c4c4c4;
+  --colour-stock-grey-500: #dedede;
+  --colour-stock-grey-600: #f7f7f7;
+  --ui-text-dark: #020304;
+  --ui-text-subdued: #5e5e5e;
+  --ui-text-light: #fdfdff;
+  --ui-alert-positive: #008537;
+
+  /* Typography */
+  --font-heading: 'Figtree', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --h3-size: 24px;
+  --h3-line-height: 32px;
+  --h3-weight: 700;
+  --body-size: 16px;
+  --body-line-height: 24px;
+  --body-weight-regular: 400;
+  --body-weight-semibold: 600;
+  --body-weight-bold: 700;
+
+  /* Spacing */
+  --space-2xs: 8px;
+  --space-xs: 16px;
+  --space-s: 24px;
+  --space-m: 32px;
+  --space-3xl: 80px;
+
+  /* Radius */
+  --radius-btn: 8px;
+  --radius-m: 16px;
+  --radius-pill: 9999px;
+
+  /* Loader */
+  --loader-size: 90px;
+  --loader-inner: 66px;
+  --loader-inset: 12px;
+  --loader-stroke: 4px;
+  --loader-track: #e5e5e5;
+}
