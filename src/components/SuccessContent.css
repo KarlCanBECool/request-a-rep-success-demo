@@ -98,37 +98,12 @@
   background: #fff;
   position: relative;
   overflow: hidden;
+  display: block;
 }
 
 .success-content__step-icon--active {
-  border: 2px solid var(--ui-alert-positive);
-}
-
-/* Figma .sub-ProgressCircle active: semicircle SVG rotated -45deg */
-.success-content__step-fill-wrap {
-  position: absolute;
-  left: -2px;
-  top: -2px;
-  width: 28px;
-  height: 21px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.success-content__step-fill {
-  flex: none;
-  width: 28px;
-  height: 14px;
-  transform: rotate(-45deg);
-  transform-origin: center center;
-}
-
-.success-content__step-fill img {
-  display: block;
-  width: 100%;
-  height: 100%;
+  /* Ring + fill drawn in SVG; no CSS border needed */
+  overflow: visible;
 }
 
 .success-content__step-icon--pending {

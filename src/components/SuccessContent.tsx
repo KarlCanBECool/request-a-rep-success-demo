@@ -1,6 +1,7 @@
 import { motion, type HTMLMotionProps } from 'motion/react'
 import type { ContentRevealKey } from '../animation/animation-timeline'
 import { ANIMATION_TIMELINE as T } from '../animation/animation-timeline'
+import { StepProgressCircle } from './StepProgressCircle'
 import './SuccessContent.css'
 
 interface RevealProps {
@@ -92,21 +93,17 @@ export function SuccessContent({ revealed, onCtaClick }: SuccessContentProps) {
               className="success-content__step"
               revealed={revealed[step.key]}
             >
-              <div
-                className={`success-content__step-icon success-content__step-icon--${step.status}`}
-                aria-hidden="true"
-              >
-                {step.status === 'active' && (
-                  <div className="success-content__step-fill-wrap">
-                    <div className="success-content__step-fill">
-                      <img
-                        src={`${import.meta.env.BASE_URL}assets/progress-fill.svg`}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+              {step.status === 'active' ? (
+                <StepProgressCircle
+                  progress={0.5}
+                  className="success-content__step-icon success-content__step-icon--active"
+                />
+              ) : (
+                <div
+                  className="success-content__step-icon success-content__step-icon--pending"
+                  aria-hidden="true"
+                />
+              )}
               <div className="success-content__step-text">
                 <p className="success-content__step-title">{step.title}</p>
                 <p className="success-content__step-desc">{step.description}</p>
