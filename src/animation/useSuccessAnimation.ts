@@ -198,5 +198,5 @@ export function useSuccessAnimation() {
     setRunId((n) => n + 1)
   }, [stopAll])
 
-  return { state, replay, prefersReducedMotion: !!prefersReducedMotion }
+  return { state, replay, runId, prefersReducedMotion: !!prefersReducedMotion }
 }

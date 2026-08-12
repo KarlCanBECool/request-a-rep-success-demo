@@ -61,7 +61,7 @@ export function AnimatedLoader({
           initial={false}
           animate={{ opacity: showMan ? 1 : 0 }}
           transition={{
-            duration: T.AVATAR_REVEAL_DURATION / 1000,
+            duration: showMan ? T.AVATAR_REVEAL_DURATION / 1000 : 0,
             ease: T.AVATAR_REVEAL_EASING,
           }}
         >
@@ -72,7 +72,7 @@ export function AnimatedLoader({
           initial={false}
           animate={{ opacity: showWoman ? 1 : 0 }}
           transition={{
-            duration: T.AVATAR_REVEAL_DURATION / 1000,
+            duration: showWoman ? T.AVATAR_REVEAL_DURATION / 1000 : 0,
             ease: T.AVATAR_REVEAL_EASING,
           }}
         >

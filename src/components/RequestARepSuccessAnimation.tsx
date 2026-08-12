@@ -7,7 +7,7 @@ import { SuccessContent } from './SuccessContent'
 import './RequestARepSuccessAnimation.css'
 
 export function RequestARepSuccessAnimation() {
-  const { state, replay } = useSuccessAnimation()
+  const { state, replay, runId } = useSuccessAnimation()
   const pageRef = useRef<HTMLElement>(null)
   const loaderRef = useRef<HTMLDivElement>(null)
   const [centerOffset, setCenterOffset] = useState(0)
@@ -54,6 +54,7 @@ export function RequestARepSuccessAnimation() {
             }
           >
             <AnimatedLoader
+              key={runId}
               progress={state.progress}
               showWoman={state.showWoman}
               showMan={state.showMan}
